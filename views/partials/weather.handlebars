@@ -1,0 +1,40 @@
+{{#section 'head'}}
+    <style>
+        .weatherWidget {
+            border: solid 1px blue;
+            margin: 4px;
+            padding: 4px;
+        }
+    </style>
+{{/section}}
+
+
+<div class="weatherWidget">
+    <div class="location">
+        <table>
+            <tr>
+                <th>Location</th>
+                <th>Icon</th>
+                <th>Weather</th>
+            </tr>
+            {{#each partials.weatherContext}}
+                <tr>
+                    <td style="text-align: center;">{{location.name}}</td>
+                    <td style="padding-left: 20px;">               
+                        <img src="{{iconUrl}}" alt="{{weather}}">
+                            &nbsp; &nbsp; 
+                    </td>
+                    <td style="text-align: center; padding-left: 20px;">
+                        <a href="{{location.forecastUrl}}">
+                            {{weather}}, {{temp}}
+                        </a>
+                    </td>
+                </tr>
+            {{/each}}
+        </table>
+
+    </div>
+    <br>
+    <small>Source: <a href="https://exl.ptpress.cn:8442/ex/l/be4512da">National Weather Service</a>
+    </small>
+</div>
