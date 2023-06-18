@@ -4,12 +4,17 @@
   "description": "",
   "main": "meilixiu.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "gsq",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^7.0.7"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "portfinder": "^1.0.32",
+    "puppeteer": "^20.7.1"
   }
 }
