@@ -20,11 +20,25 @@ app.engine('handlebars', expressHandlebars({
 }))
 app.set('view engine', 'handlebars') 
 
+
 // bodyParser for POST HTML form
 const bodyParser        = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
 //
 app.use(bodyParser.json())
+
+
+const { credentials }   = require('./config')
+const cookieParser      = require('cookie-parser')
+app.use(cookieParser(credentials.cookieSecret))
+//
+const expressSession    = require('express-session')
+app.use(expressSession({
+    resave: false,
+    saveUninitialized: false,
+    secret: credentials.cookieSecret, // cookie signed key for the Session ID
+}))
+
 
 
 // PORT env setting
@@ -37,6 +51,9 @@ const port = process.env.PORT || 3000
 
 
 // ------------------------------------ [static middleware should be declared with a top priority]
+app.use(express.static(
+    __dirname + '/node_modules/bootstrap/dist' // https://stackoverflow.com/questions/30473993/how-to-use-npm-installed-bootstrap-in-express
+)) 
 app.use(express.static( // ------------ [Middleware: router for each static asset] what are in '/public' will be provided by static middleware
     __dirname + '/public'
 )) 
@@ -44,10 +61,27 @@ app.use(weatherMiddleware)
 
 
 
+// Before all router view, flash middleware should be imported
+const flashMiddleware = require('./lib/middleware/flash')
+app.use(flashMiddleware)
+
+
+
+
+
+
+
+
+
+
 // ------------------------------------ app.METHOD -> HTTP: get, post, ...
 app.get('/', handlers.home)
 app.get('/about', handlers.about)
 app.get('/section-test', handlers.sectionTest)
+
+
+
+
 
 
 
