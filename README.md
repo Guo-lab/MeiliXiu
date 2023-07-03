@@ -49,6 +49,10 @@ Time:        0.535 s, estimated 1 s
 Ran all test suites.    
 ```
 
+<br>
+<br>
+<br>
+
 ---
 
 ## Cookie & Session
@@ -60,3 +64,37 @@ const credentials = require(`./.credentials.${env}`)
 module.exports = { credentials }
 ```  
 - To import configure files, use `const { credentials } = require('./config')`  
+
+<br>
+<br>
+<br>
+
+***
+
+## Email: SMTP
+With [SendCloud](https://www.sendcloud.net/doc/email_v2/code/) and node:Nodemailer
+```javascript
+mail sent successfully:  {
+  accepted: [ '2404290928@qq.com', 'rong5hui@163.com' ],
+  rejected: [],
+  ehlo: [
+    'PIPELINING',
+    '8BITMIME',
+    'SMTPUTF8',
+    'SIZE 73400320',
+    'AUTH LOGIN'
+  ],
+  envelopeTime: 33,
+  messageTime: 67,
+  messageSize: 705,
+  response: '250 #1688230984071_207464_103258_3427.sc-10_9_40_164-inbound#Queued',
+  envelope: {
+    from: 'sendcloud@mail.sendcloud.net',
+    to: [ '2404290928@qq.com', 'rong5hui@163.com' ]
+  },
+  messageId: '<d73fd563-7529-cf85-a767-bf2804eb004e@mail.sendcloud.net>'
+}
+```
+
+<br>
+<b>Email Templates</b>: res.render()

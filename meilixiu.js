@@ -41,7 +41,45 @@ app.use(expressSession({
 
 
 
-// PORT env setting
+// ==== Email SMTP ====
+const nodemailer = require('nodemailer')
+// https://www.sendcloud.net/sendSetting/apiuser
+// https://www.sendcloud.net/doc/email_v2/code/
+const mailTransport = nodemailer.createTransport({ 
+    host: 'smtp.sendcloud.net',
+    port: 25,
+    auth: {
+      user: credentials.sendSmtp.user,
+      pass: credentials.sendSmtp.password,
+    },
+})
+// ==== Test SMTP ====
+const recp_tos = ["rong5hui@163.com"] //["1722270523@qq.com", "1731003698@qq.com", "rong5hui@163.com"] //["2404290928@qq.com", "rong5hui@163.com"]
+async function go() {
+    try {
+        const result = await mailTransport.sendMail({
+            from: 'sendcloud@mail.sendcloud.net',
+            to: recp_tos.join(', '),
+            subject: 'Auto email. Please do not reply.',
+            text: 'Welcome!',
+            html: '<h1>MeiliXiu Travel</h1>\n<p>Thanks for visiting ' +
+                  'us.  <b>We look forward to your next visit!</b>',
+            attachments: [
+                {
+                    filename: 'test.txt',
+                    content: 'Hello !'
+                },
+            ]
+        })
+        console.log('mail sent successfully: ', result)
+    } catch(err) {
+        console.log('could not send mail: ' + err.message)
+    }
+}
+// go()
+
+
+// ==== PORT env setting ====
 const port = process.env.PORT || 3000
 
 
