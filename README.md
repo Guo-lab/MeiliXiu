@@ -1,11 +1,9 @@
 # MeiliXiu
 
-
 <br>
 <br>
 <br>
 <br>
-
 
 ## Test:
 
@@ -30,9 +28,8 @@
   Time:        0.471 s
   Ran all test suites.
   ```
-  
-- & Coverage Test  
-  
+- & Coverage Test
+
   ```javascript
   (base) 192:MeiliXiu gsq$ npm test -- --coverage
 
@@ -48,9 +45,9 @@
   ----------------|---------|----------|---------|---------|-------------------
   File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
   ----------------|---------|----------|---------|---------|-------------------
-  All files       |     100 |      100 |     100 |     100 |     
-  handlers.js     |     100 |      100 |     100 |     100 |     
-  luckyNumber.js  |     100 |      100 |     100 |     100 |     
+  All files       |     100 |      100 |     100 |     100 |   
+  handlers.js     |     100 |      100 |     100 |     100 |   
+  luckyNumber.js  |     100 |      100 |     100 |     100 |   
   ----------------|---------|----------|---------|---------|-------------------
   Test Suites: 1 passed, 1 total
   Tests:       4 passed, 4 total
@@ -58,7 +55,6 @@
   Time:        0.535 s, estimated 1 s
   Ran all test suites.  
   ```
-
 
 <br>
 <br>
@@ -70,12 +66,12 @@
 
 In project directory:
 
-  ```javascript
-  const env = process.env.NODE_ENV || 'development'
-  const credentials = require(`./.credentials.${env}`)
+```javascript
+const env = process.env.NODE_ENV || 'development'
+const credentials = require(`./.credentials.${env}`)
 
-  module.exports = { credentials }
-  ```
+module.exports = { credentials }
+```
 
 - To import configure files, use `const { credentials } = require('./config')`
 
@@ -89,28 +85,28 @@ In project directory:
 
 With [SendCloud](https://www.sendcloud.net/doc/email_v2/code/) and node:Nodemailer
 
-  ```javascript
-  mail sent successfully:  {
-    accepted: [ '2404290928@qq.com', 'rong5hui@163.com' ],
-    rejected: [],
-    ehlo: [
-      'PIPELINING',
-      '8BITMIME',
-      'SMTPUTF8',
-      'SIZE 73400320',
-      'AUTH LOGIN'
-    ],
-    envelopeTime: 33,
-    messageTime: 67,
-    messageSize: 705,
-    response: '250 #1688230984071_207464_103258_3427.sc-10_9_40_164-inbound#Queued',
-    envelope: {
-      from: 'sendcloud@mail.sendcloud.net',
-      to: [ '2404290928@qq.com', 'rong5hui@163.com' ]
-    },
-    messageId: '<d73fd563-7529-cf85-a767-bf2804eb004e@mail.sendcloud.net>'
-  }
-  ```
+```javascript
+mail sent successfully:  {
+  accepted: [ '2404290928@qq.com', 'rong5hui@163.com' ],
+  rejected: [],
+  ehlo: [
+    'PIPELINING',
+    '8BITMIME',
+    'SMTPUTF8',
+    'SIZE 73400320',
+    'AUTH LOGIN'
+  ],
+  envelopeTime: 33,
+  messageTime: 67,
+  messageSize: 705,
+  response: '250 #1688230984071_207464_103258_3427.sc-10_9_40_164-inbound#Queued',
+  envelope: {
+    from: 'sendcloud@mail.sendcloud.net',
+    to: [ '2404290928@qq.com', 'rong5hui@163.com' ]
+  },
+  messageId: '<d73fd563-7529-cf85-a767-bf2804eb004e@mail.sendcloud.net>'
+}
+```
 
 <br>
 <b>Email Templates</b>: res.render()
@@ -123,7 +119,6 @@ With [SendCloud](https://www.sendcloud.net/doc/email_v2/code/) and node:Nodemail
 - ### File System
 - ### MongoDB, mLab, SANDBOX
 
-
   <img src="./public/img/image.png" alt="image-20230705012256694" style="zoom:20%;" />
   <img src="./public/img/image_2.png" alt="image-20230705012256694" style="zoom:23%;">
 
@@ -134,14 +129,71 @@ With [SendCloud](https://www.sendcloud.net/doc/email_v2/code/) and node:Nodemail
     4. NoSQLBooster [NoSQLBooster - The Smartest GUI Tool and IDE for MongoDB](https://nosqlbooster.com/)
   - (username & password) MongoDB > Database Access
 - ### PostgreSQL > ElephantSQL
-  <img src="./public/img/20230711_135700_image.png" alt="image-20230711_135700_image" style="zoom:23%;">  
+
+  <img src="./public/img/20230711_135700_image.png" alt="image-20230711_135700_image" style="zoom:23%;">
 
   - Relational Database should be initialized first.
     ```javascript
     creating database schema
     seeding vacations completed
     3  vacations now
-    ```  
-- ### Switch MongoDB and PostgresSQL with different module.exports 
-  Connect Mongo Database and PostgresSQL Database at the same time   
-  At the first time, Postgres should be `node database-relational-init.js`.  
+    ```
+- ### Switch MongoDB and PostgresSQL with different module.exports
+
+  Connect Mongo Database and PostgresSQL Database at the same time
+  At the first time, Postgres should be `node database-relational-init.js`.
+
+---
+
+<br>
+<br>
+
+## Router
+
+- Organize:
+
+  > ```
+  > meilixiu.js <- routes.js <- handlers/main.js, handlers/vacations.js ... 
+  > ```
+  > in handlers/main.js
+  >
+  > ```
+  > exports.home = (req, res) => res.render('home')
+  > // ...
+  > ```
+  > in routes.js
+  >
+  > ```
+  > const main = require('./handlers/main')
+  > module.exports = function(app) {
+  >     app.get('/', main.home)
+  >     // ...
+  > }
+  > ```
+  > in meilixiu.js
+  >
+  > ```
+  > require('./routes')(app)
+  > ```
+  >
+- Auto Views:
+
+  Before 404 function `app.use(handlers.notFound)`
+
+  ```javascript
+  const autoViews     = {}
+  const fs            = require('fs')
+  const { promisify } = require('util')
+  const fileExists    = promisify(fs.exists)
+
+  app.use(async (req, res, next) => {
+      const path = req.path.toLowerCase()
+      if(autoViews[path]) 
+          return res.render(autoViews[path])
+      if(await fileExists(__dirname + '/views' + path + '.handlebars')) {
+          autoViews[path] = path.replace(/^\//, '') // remove the first '/' if there is
+          return res.render(autoViews[path])
+      }
+      next() // no views, to 404 handler
+  })
+  ```
