@@ -17,8 +17,11 @@
     "express-session": "^1.17.3",
     "html-to-formatted-text": "^2.7.0",
     "jquery": "^3.7.0",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.10.0",
     "multiparty": "^4.2.3",
     "nodemailer": "^6.9.3",
+    "pg": "^8.11.1",
     "popper.js": "^1.16.1"
   },
   "devDependencies": {

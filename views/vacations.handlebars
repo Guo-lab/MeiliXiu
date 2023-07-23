@@ -1,0 +1,23 @@
+<h1>Vacations</h1>
+
+{{#each vacations}}
+
+    <div class="vacation">
+        <h3>{{name}}</h3>
+        <p>{{description}}</p>
+
+        {{#if isVisited}}
+            <span></span>
+        {{else}}
+
+            <span class="notVisited">We're sorry, this vacation ({{name}}) is currently not visited.
+            {{! The "notify me when this vacation has been visited" page}}
+            <a href="/notify-when-visited?name={{name}}">Notify me when this vacation has been visited.</a>
+            </span>
+        {{/if}}
+    </div>
+
+{{/each}}
+
+
+<hr>
