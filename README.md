@@ -1,6 +1,7 @@
 # MeiliXiu
+Web Development with Node and Express, Second Edition   
+[Reference Repo](https://github.com/EthanRBrown/web-development-with-node-and-express-2e)
 
-<br>
 <br>
 <br>
 <br>
