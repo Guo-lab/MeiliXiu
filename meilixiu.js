@@ -5,6 +5,8 @@ const handlers          = require("./lib/handlers")
 const weatherMiddleware = require("./lib/middleware/weather")   // weatherMiddleware = async 
 
 
+require('./database')
+
 const app  = express()
 app.engine('handlebars', expressHandlebars({
     defaultLayout: 'main', // --------- {{{WOULD BE REPLACED BY HTML}}}
@@ -92,6 +94,9 @@ const port = process.env.PORT || 3000
 app.use(express.static(
     __dirname + '/node_modules/bootstrap/dist' // https://stackoverflow.com/questions/30473993/how-to-use-npm-installed-bootstrap-in-express
 )) 
+app.use(express.static(
+    __dirname + '/node_modules/jquery/dist'
+)) 
 app.use(express.static( // ------------ [Middleware: router for each static asset] what are in '/public' will be provided by static middleware
     __dirname + '/public'
 )) 
@@ -158,6 +163,47 @@ app.post('/api/vacation-photo-record/:year/:month', (req, res) => {
     })
 })
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+/// File System
+app.get('/record/vacation-photo-ajax-fs-storage', handlers.vacationPhotoRecordAjaxFileSystem)
+app.post('/api/vacation-photo-record-fs-storage/:year/:month', (req, res) => {
+    const form = new multiparty.Form()
+    form.parse(req, (err, fields, files) => {
+        if(err) 
+            return res.status(500).send({ error: err.message })
+        handlers.api.vacationPhotoRecordAjaxFileSystem(req, res, fields, files)
+    })
+})
+
+
+
+
+/// MongoDB & Postgres
+app.get('/vacations', handlers.listVacations)
+app.get('/notify-when-visited', handlers.notifyWhenVisitedForm)
+app.post('/notify-when-visited', handlers.notifyWhenVisitedProcess)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
